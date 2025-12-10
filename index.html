@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testeur d'Accessibilité d'Images</title>
+    <title>Testeur d'Accessibilité des Visuels</title>
     <link rel="stylesheet" href="https://alixb-accessible.github.io/faites-mieux-toolbar/faites-mieux.css">
     <script src="https://alixb-accessible.github.io/faites-mieux-toolbar/faites-mieux.js" defer></script>
     <style>
@@ -42,14 +42,27 @@
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #1a1a1a;
             margin-bottom: 0.5rem;
         }
 
-        .header p {
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .header .author {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .header .subtitle {
             font-size: 1.1rem;
             color: #4a4a4a;
+            margin-top: 0.5rem;
         }
 
         .upload-section {
@@ -63,10 +76,10 @@
         .upload-zone {
             border: 3px dashed #dc2626;
             border-radius: 0.5rem;
-            padding: 3rem;
+            padding: 3rem 1rem;
             text-align: center;
-            cursor: pointer;
             transition: all 0.3s;
+            position: relative;
         }
 
         .upload-zone:hover,
@@ -78,11 +91,41 @@
         .upload-zone label {
             cursor: pointer;
             display: block;
+            width: 100%;
+            padding: 1rem;
         }
 
         .upload-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
+        }
+
+        /* Style pour l'input sur mobile - visible mais stylisé */
+        input[type="file"] {
+            width: 100%;
+            padding: 1rem;
+            margin-top: 1rem;
+            border: 2px solid #dc2626;
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #1a1a1a;
+        }
+
+        input[type="file"]::file-selector-button {
+            padding: 0.75rem 1.5rem;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: #991b1b;
         }
 
         .main-content {
@@ -109,9 +152,6 @@
             font-size: 1.5rem;
             color: #1a1a1a;
             margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .vision-button {
@@ -180,6 +220,10 @@
             outline-offset: 2px;
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
         .btn-download {
             background: #7c3aed;
             color: white;
@@ -187,6 +231,16 @@
 
         .btn-reset {
             background: #22c55e;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-analyze {
+            background: #3b82f6;
             color: white;
         }
 
@@ -220,11 +274,27 @@
             padding: 1rem;
             border-radius: 0.5rem;
             border: 2px solid;
+            margin-bottom: 1rem;
         }
 
         .info-box.tips {
             background: #f0fdf4;
             border-color: #22c55e;
+        }
+
+        .info-box.warning {
+            background: #fef3c7;
+            border-color: #fbbf24;
+        }
+
+        .info-box.error {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .info-box.info {
+            background: #dbeafe;
+            border-color: #3b82f6;
         }
 
         .info-box h3 {
@@ -246,11 +316,27 @@
             position: relative;
         }
 
-        .info-box li::before {
+        .info-box.tips li::before {
             content: "✓";
             position: absolute;
             left: 0;
             color: #22c55e;
+            font-weight: bold;
+        }
+
+        .info-box.warning li::before,
+        .info-box.error li::before {
+            content: "⚠";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .info-box.info li::before {
+            content: "ℹ";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
             font-weight: bold;
         }
 
@@ -263,58 +349,75 @@
         }
 
         .footer p {
-            font-size: 1.1rem;
             color: #1a1a1a;
+        }
+
+        .footer a {
+            color: #dc2626;
+            text-decoration: none;
             font-weight: 600;
+        }
+
+        .footer a:hover,
+        .footer a:focus {
+            text-decoration: underline;
         }
 
         .hidden {
             display: none;
         }
 
-        input[type="file"] {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0,0,0,0);
-            border: 0;
+        .analyzing {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>Testeur d'Accessibilité d'Images</h1>
-            <p>Testez vos visuels militants pour tous les types de vision</p>
+            <h1>Testeur d'Accessibilité des Visuels</h1>
+            <p class="author">Créé par Ti Racoon</p>
+            <p class="subtitle">Testez vos visuels militants pour tous les types de vision</p>
         </header>
 
         <section class="upload-section">
-            <div class="upload-zone" tabindex="0" role="button" aria-label="Zone de téléchargement d'image">
-                <input type="file" accept="image/*" id="imageUpload" aria-label="Sélectionner une image">
+            <div class="upload-zone">
                 <label for="imageUpload">
                     <div class="upload-icon" aria-hidden="true">📤</div>
-                    <p style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Cliquez pour télécharger une image</p>
+                    <p style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Sélectionnez une image</p>
                     <p style="color: #6b7280;">JPG, PNG, GIF</p>
                 </label>
+                <input type="file" accept="image/*" id="imageUpload" aria-label="Sélectionner une image">
             </div>
         </section>
 
         <div class="main-content hidden" id="mainContent">
             <aside class="controls-panel">
-                <h2>
-                    <span aria-hidden="true">👁</span>
-                    <span>Type de Vision</span>
-                </h2>
+                <h2>Type de Vision</h2>
                 <div id="visionButtons" role="radiogroup" aria-label="Sélectionner un type de vision">
                     <!-- Buttons will be inserted here -->
                 </div>
                 <div class="action-buttons">
+                    <button class="btn btn-analyze" id="analyzeBtn" aria-label="Analyser les contrastes de l'image">
+                        <span aria-hidden="true">🔍</span>
+                        <span>Analyser les contrastes</span>
+                    </button>
                     <button class="btn btn-download" id="downloadBtn" aria-label="Télécharger l'image simulée">
                         <span aria-hidden="true">⬇</span>
                         <span>Télécharger l'image</span>
+                    </button>
+                    <button class="btn btn-delete" id="clearBtn" aria-label="Supprimer le visuel actuel">
+                        <span aria-hidden="true">🗑</span>
+                        <span>Supprimer le visuel</span>
                     </button>
                     <button class="btn btn-reset" id="resetBtn" aria-label="Réinitialiser et charger une nouvelle image">
                         <span aria-hidden="true">🔄</span>
@@ -328,6 +431,9 @@
                 <div class="canvas-wrapper">
                     <canvas id="canvas" role="img" aria-label="Aperçu de l'image avec simulation de vision"></canvas>
                 </div>
+                
+                <div id="analysisResults"></div>
+                
                 <div class="info-box tips">
                     <h3>
                         <span aria-hidden="true">✓</span>
@@ -345,8 +451,11 @@
         </div>
 
         <footer class="footer">
-            <p>« Faites mieux ! » © JLM</p>
-            <p style="margin-top: 0.5rem; color: #4a4a4a;">L'accessibilité, c'est pour toutes et tous, sans exception</p>
+            <p style="font-size: 1.1rem; font-weight: 600;">« Faites mieux ! » © JLM</p>
+            <p style="margin-top: 1rem; font-weight: 600;">Contact</p>
+            <p style="margin-top: 0.5rem;">Pour toute question, suggestion ou collaboration :</p>
+            <p style="margin-top: 0.5rem;"><a href="mailto:TiRacoon_97114@proton.me">TiRacoon_97114@proton.me</a></p>
+            <p style="margin-top: 0.5rem;">Ensemble, créons un web plus accessible et inclusif</p>
         </footer>
     </div>
 
@@ -363,9 +472,9 @@
             { id: 'scotopic', name: 'Vision Scotopique', desc: 'Vision en faible luminosité' },
             { id: 'tunnel', name: 'Vision Tunnel', desc: 'Perte de vision périphérique' },
             { id: 'peripheral', name: 'Perte Périphérique', desc: 'Perte de vision centrale' },
-            { id: 'scotoma', name: 'Scotome Central', desc: 'Tache aveugle centrale' },
+            { id: 'scotoma', name: 'Scotome Central', desc: 'Tache aveugle centrale (DMLA)' },
             { id: 'hemianopsia', name: 'Hémianopsie', desc: 'Perte de la moitié du champ visuel' },
-            { id: 'blurred', name: 'Vision Floue', desc: 'Simulation de flou visuel' }
+            { id: 'blurred', name: 'Vision Floue', desc: 'Prosopagnosie - difficulté à reconnaître' }
         ];
 
         let currentVision = 'normal';
@@ -377,6 +486,7 @@
         const mainContent = document.getElementById('mainContent');
         const previewTitle = document.getElementById('previewTitle');
         const visionButtonsContainer = document.getElementById('visionButtons');
+        const analysisResults = document.getElementById('analysisResults');
 
         // Create vision type buttons
         visionTypes.forEach((vision, index) => {
@@ -402,6 +512,8 @@
         document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
         document.getElementById('downloadBtn').addEventListener('click', downloadImage);
         document.getElementById('resetBtn').addEventListener('click', reset);
+        document.getElementById('clearBtn').addEventListener('click', reset);
+        document.getElementById('analyzeBtn').addEventListener('click', analyzeContrast);
 
         function handleImageUpload(e) {
             const file = e.target.files[0];
@@ -415,6 +527,7 @@
                         currentVision = 'normal';
                         updateVisionButtons();
                         applyVisionFilter();
+                        analysisResults.innerHTML = '';
                     };
                 };
                 reader.readAsDataURL(file);
@@ -531,7 +644,8 @@ function applyVisionFilter() {
 
             ctx.putImageData(imageData, 0, 0);
         }
-function applyTunnelVision() {
+
+        function applyTunnelVision() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
             const radius = Math.min(canvas.width, canvas.height) * 0.25;
@@ -561,10 +675,17 @@ function applyTunnelVision() {
         function applyScotoma() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
+            const radius = Math.min(canvas.width, canvas.height) * 0.2;
             
+            // Créer un gradient radial pour des bords flous
+            const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.3, centerX, centerY, radius);
+            gradient.addColorStop(0, 'rgba(40,40,40,0.95)');
+            gradient.addColorStop(0.7, 'rgba(60,60,60,0.8)');
+            gradient.addColorStop(1, 'rgba(80,80,80,0.3)');
+            
+            ctx.fillStyle = gradient;
             ctx.beginPath();
-            ctx.arc(centerX, centerY, 80, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(128,128,128,0.8)';
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
             ctx.fill();
         }
 
@@ -572,10 +693,175 @@ function applyTunnelVision() {
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
             ctx.fillRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
         }
+function analyzeContrast() {
+            if (!sourceImage.src) return;
+
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            analyzeBtn.disabled = true;
+            analyzeBtn.classList.add('analyzing');
+
+            setTimeout(() => {
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                const colorMap = new Map();
+                const brightColors = [];
+                const darkColors = [];
+                
+                // Échantillonner les couleurs (tous les 10 pixels pour la performance)
+                for (let i = 0; i < data.length; i += 40) {
+                    const r = data[i];
+                    const g = data[i + 1];
+                    const b = data[i + 2];
+                    const a = data[i + 3];
+                    
+                    if (a < 128) continue; // Ignorer les pixels transparents
+                    
+                    const colorKey = `${Math.floor(r/20)*20},${Math.floor(g/20)*20},${Math.floor(b/20)*20}`;
+                    colorMap.set(colorKey, (colorMap.get(colorKey) || 0) + 1);
+                    
+                    // Calculer la luminosité
+                    const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+                    
+                    if (luminance > 200) {
+                        brightColors.push({ r, g, b, luminance });
+                    } else if (luminance < 80) {
+                        darkColors.push({ r, g, b, luminance });
+                    }
+                }
+                
+                // Trouver les couleurs dominantes
+                const sortedColors = Array.from(colorMap.entries())
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+                
+                // Analyser les problèmes potentiels
+                const issues = [];
+                const warnings = [];
+                const info = [];
+                
+                // Détecter jaune sur blanc
+                const hasYellowOnWhite = checkColorCombination(data, 
+                    [200, 255], [180, 255], [0, 100], // Jaune
+                    [220, 255], [220, 255], [220, 255]  // Blanc
+                );
+                
+                if (hasYellowOnWhite) {
+                    issues.push("Texte jaune détecté sur fond clair - Contraste probablement insuffisant");
+                }
+                
+                // Détecter rouge sur vert ou vert sur rouge
+                const hasRedGreen = checkColorCombination(data,
+                    [180, 255], [0, 80], [0, 80],  // Rouge
+                    [0, 80], [180, 255], [0, 80]   // Vert
+                );
+                
+                if (hasRedGreen) {
+                    issues.push("Combinaison rouge/vert détectée - Problématique pour les daltoniens");
+                }
+                
+                // Détecter bleu sur rouge
+                const hasBlueRed = checkColorCombination(data,
+                    [0, 80], [0, 80], [180, 255],  // Bleu
+                    [180, 255], [0, 80], [0, 80]   // Rouge
+                );
+                
+                if (hasBlueRed) {
+                    warnings.push("Combinaison bleu/rouge détectée - Peut être difficile à lire");
+                }
+                
+                // Vérifier les contrastes généraux
+                if (brightColors.length > 100 && darkColors.length < 20) {
+                    warnings.push("Image majoritairement claire - Vérifiez la lisibilité du texte sombre");
+                }
+                
+                if (darkColors.length > 100 && brightColors.length < 20) {
+                    warnings.push("Image majoritairement sombre - Vérifiez la lisibilité du texte clair");
+                }
+                
+                // Suggestions générales
+                info.push("Testez votre visuel avec tous les types de vision disponibles");
+                info.push("Assurez-vous que le texte a un contraste d'au moins 4.5:1 avec le fond");
+                
+                if (issues.length === 0 && warnings.length === 0) {
+                    info.push("Aucun problème majeur détecté - continuez à tester avec différentes visions");
+                }
+                
+                // Afficher les résultats
+                let html = '';
+                
+                if (issues.length > 0) {
+                    html += '<div class="info-box error"><h3><span aria-hidden="true">⚠</span><span>Problèmes détectés</span></h3><ul>';
+                    issues.forEach(issue => {
+                        html += `<li>${issue}</li>`;
+                    });
+                    html += '</ul></div>';
+                }
+                
+                if (warnings.length > 0) {
+                    html += '<div class="info-box warning"><h3><span aria-hidden="true">⚠</span><span>Avertissements</span></h3><ul>';
+                    warnings.forEach(warning => {
+                        html += `<li>${warning}</li>`;
+                    });
+                    html += '</ul></div>';
+                }
+                
+                if (info.length > 0) {
+                    html += '<div class="info-box info"><h3><span aria-hidden="true">ℹ</span><span>Recommandations</span></h3><ul>';
+                    info.forEach(i => {
+                        html += `<li>${i}</li>`;
+                    });
+                    html += '</ul></div>';
+                }
+                
+                analysisResults.innerHTML = html;
+                
+                analyzeBtn.disabled = false;
+                analyzeBtn.classList.remove('analyzing');
+            }, 500);
+        }
+        
+        function checkColorCombination(data, color1R, color1G, color1B, color2R, color2G, color2B) {
+            let matches = 0;
+            const threshold = 100; // Nombre de pixels adjacents nécessaires
+            
+            for (let i = 0; i < data.length - 4; i += 40) {
+                const r1 = data[i];
+                const g1 = data[i + 1];
+                const b1 = data[i + 2];
+                const a1 = data[i + 3];
+                
+                if (a1 < 128) continue;
+                
+                // Vérifier si le pixel correspond à la couleur 1
+                if (r1 >= color1R[0] && r1 <= color1R[1] &&
+                    g1 >= color1G[0] && g1 <= color1G[1] &&
+                    b1 >= color1B[0] && b1 <= color1B[1]) {
+                    
+                    // Vérifier les pixels adjacents pour la couleur 2
+                    for (let j = -4; j <= 4; j += 4) {
+                        if (i + j >= 0 && i + j < data.length - 3) {
+                            const r2 = data[i + j];
+                            const g2 = data[i + j + 1];
+                            const b2 = data[i + j + 2];
+                            
+                            if (r2 >= color2R[0] && r2 <= color2R[1] &&
+                                g2 >= color2G[0] && g2 <= color2G[1] &&
+                                b2 >= color2B[0] && b2 <= color2B[1]) {
+                                matches++;
+                                if (matches > threshold) return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
 
         function downloadImage() {
             const link = document.createElement('a');
-            link.download = `image-${currentVision}.png`;
+            const visionName = visionTypes.find(v => v.id === currentVision).name;
+            link.download = `visuel-${currentVision}-${Date.now()}.png`;
             link.href = canvas.toDataURL();
             link.click();
         }
@@ -587,8 +873,8 @@ function applyTunnelVision() {
             originalImage = null;
             currentVision = 'normal';
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            analysisResults.innerHTML = '';
         }
     </script>
 </body>
 </html>
-
