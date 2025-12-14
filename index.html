@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testeur d'Accessibilité des Visuels</title>
+    <title>Testez vos contrastes - Outil d'accessibilité visuelle</title>
     <link rel="stylesheet" href="https://alixb-accessible.github.io/faites-mieux-toolbar/faites-mieux.css">
     <script src="https://alixb-accessible.github.io/faites-mieux-toolbar/faites-mieux.js" defer></script>
     <style>
@@ -24,7 +24,22 @@
                 #dc2626 71.4%, #dc2626 85.68%,
                 #4a4a4a 85.68%, #4a4a4a 100%);
             min-height: 100vh;
-            padding: 2rem;
+            padding: 1.5rem;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
         }
 
         .container {
@@ -35,28 +50,16 @@
         .header {
             text-align: center;
             margin-bottom: 2rem;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             padding: 2rem;
             border-radius: 1rem;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         .header h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #1a1a1a;
             margin-bottom: 0.5rem;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-        }
-
-        .header .author {
-            font-size: 1rem;
-            color: #6b7280;
-            margin-top: 0.5rem;
         }
 
         .header .subtitle {
@@ -76,10 +79,10 @@
         .upload-zone {
             border: 3px dashed #dc2626;
             border-radius: 0.5rem;
-            padding: 3rem 1rem;
+            padding: 2rem;
             text-align: center;
             transition: all 0.3s;
-            position: relative;
+            cursor: pointer;
         }
 
         .upload-zone:hover,
@@ -88,128 +91,283 @@
             background: #fef2f2;
         }
 
-        .upload-zone label {
+        .upload-zone.has-image {
+            border-style: solid;
+            border-color: #22c55e;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        input[type="file"]:focus + label {
+            outline: 3px solid #dc2626;
+            outline-offset: 2px;
+        }
+
+        .upload-label {
             cursor: pointer;
             display: block;
-            width: 100%;
             padding: 1rem;
         }
 
-        .upload-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Style pour l'input sur mobile - visible mais stylisé */
-        input[type="file"] {
-            width: 100%;
-            padding: 1rem;
-            margin-top: 1rem;
-            border: 2px solid #dc2626;
-            border-radius: 0.5rem;
+        .tabs-container {
             background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e5e7eb;
+            background: #f9fafb;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 140px;
+            padding: 1rem 1.5rem;
+            border: none;
+            background: transparent;
             cursor: pointer;
             font-size: 1rem;
-            color: #1a1a1a;
-        }
-
-        input[type="file"]::file-selector-button {
-            padding: 0.75rem 1.5rem;
-            background: #dc2626;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
             font-weight: 600;
-            margin-right: 1rem;
+            color: #6b7280;
+            transition: all 0.2s;
+            border-bottom: 3px solid transparent;
         }
 
-        input[type="file"]::file-selector-button:hover {
-            background: #991b1b;
+        .tab:hover {
+            background: #f3f4f6;
+            color: #374151;
         }
 
-        .main-content {
+        .tab:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: -2px;
+        }
+
+        .tab.active {
+            color: #dc2626;
+            border-bottom-color: #dc2626;
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .main-workspace {
             display: grid;
             grid-template-columns: 350px 1fr;
             gap: 2rem;
         }
 
-        @media (max-width: 1024px) {
-            .main-content {
+        @media (max-width: 1200px) {
+            .main-workspace {
                 grid-template-columns: 1fr;
             }
         }
 
-        .controls-panel {
-            background: white;
-            border-radius: 1rem;
+        .panel {
+            background: #f9fafb;
+            border-radius: 0.5rem;
             padding: 1.5rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            height: fit-content;
         }
 
-        .controls-panel h2 {
-            font-size: 1.5rem;
+        .panel h2 {
+            font-size: 1.3rem;
             color: #1a1a1a;
             margin-bottom: 1rem;
         }
 
-        .vision-button {
-            width: 100%;
-            text-align: left;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-            border: 2px solid transparent;
-            border-radius: 0.5rem;
+        .canvas-wrapper {
             background: #f3f4f6;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
         }
 
-        .vision-button:hover,
-        .vision-button:focus {
-            background: #e5e7eb;
-            border-color: #dc2626;
+        canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            cursor: default;
+        }
+
+        canvas.pipette-active {
+            cursor: crosshair;
+        }
+
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vision-btn {
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .vision-btn:hover,
+        .vision-btn:focus {
+            background: #f3f4f6;
+            border-color: #3b82f6;
             outline: none;
         }
 
-        .vision-button.active {
-            background: #dc2626;
+        .vision-btn.active {
+            background: #3b82f6;
             color: white;
-            border-color: #dc2626;
+            border-color: #3b82f6;
         }
 
-        .vision-button .name {
+        .vision-btn .name {
             font-weight: 600;
             display: block;
             margin-bottom: 0.25rem;
         }
 
-        .vision-button .desc {
-            font-size: 0.875rem;
+        .vision-btn .desc {
+            font-size: 0.75rem;
             opacity: 0.8;
         }
 
-        .action-buttons {
-            margin-top: 1.5rem;
+        .adjustments-panel {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .adjustments-panel h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: #374151;
+        }
+
+        .slider-group {
+            margin-bottom: 1rem;
+        }
+
+        .slider-group label {
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+
+        .slider-group input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #d1d5db;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+
+        .slider-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            border: none;
+        }
+
+        .color-picker-section {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .color-picker-section h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: #374151;
+        }
+
+        .color-input-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .color-input-group label {
+            font-weight: 500;
+            color: #4b5563;
+            min-width: 50px;
+            font-size: 0.9rem;
+        }
+
+        .color-input-group input[type="text"] {
+            flex: 1;
+            padding: 0.5rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        .color-input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .color-input-group input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            cursor: pointer;
         }
 
         .btn {
-            padding: 0.875rem 1.5rem;
+            padding: 0.875rem 1.25rem;
             border: none;
             border-radius: 0.5rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+            width: 100%;
+            margin-bottom: 0.75rem;
         }
 
         .btn:hover,
@@ -220,58 +378,154 @@
             outline-offset: 2px;
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn-download {
-            background: #7c3aed;
-            color: white;
-        }
-
-        .btn-reset {
-            background: #22c55e;
-            color: white;
-        }
-
-        .btn-delete {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-analyze {
+        .btn-primary {
             background: #3b82f6;
             color: white;
         }
 
-        .preview-panel {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        .btn-success {
+            background: #22c55e;
+            color: white;
         }
 
-        .preview-panel h2 {
-            font-size: 1.5rem;
-            color: #1a1a1a;
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-purple {
+            background: #7c3aed;
+            color: white;
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn.active {
+            background: #f59e0b;
+        }
+
+        .btn.active:hover {
+            background: #d97706;
+        }
+
+        .contrast-results {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
             margin-bottom: 1rem;
         }
 
-        .canvas-wrapper {
-            background: #f3f4f6;
-            border-radius: 0.5rem;
-            overflow: hidden;
+        .ratio-display {
+            text-align: center;
             margin-bottom: 1.5rem;
         }
 
-        canvas {
+        .ratio-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
             display: block;
-            max-width: 100%;
-            height: auto;
         }
 
-        .info-box {
+        .ratio-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .test-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .test-item {
+            background: #f9fafb;
             padding: 1rem;
+            border-radius: 0.5rem;
+            border: 2px solid #e5e7eb;
+        }
+
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .test-title {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .test-badges {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.pass {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .preview {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .preview.large {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .score-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 4rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .score-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .score-excellent { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); }
+        .score-good { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+        .score-medium { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .score-poor { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+
+        .info-box {
+            padding: 1.25rem;
             border-radius: 0.5rem;
             border: 2px solid;
             margin-bottom: 1rem;
@@ -298,11 +552,9 @@
         }
 
         .info-box h3 {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
             margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-weight: 600;
         }
 
         .info-box ul {
@@ -314,6 +566,8 @@
             margin-bottom: 0.5rem;
             padding-left: 1.5rem;
             position: relative;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .info-box.tips li::before {
@@ -340,15 +594,90 @@
             font-weight: bold;
         }
 
+        .info-box p {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box a {
+            color: #dc2626;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+
+        .canvas-instructions {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #92400e;
+            font-weight: 600;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-content h2 {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .about-content h2:first-child {
+            margin-top: 0;
+        }
+
+        .about-content h3 {
+            font-size: 1.3rem;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .about-content p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            color: #4b5563;
+        }
+
+        .about-content ul {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        .about-content li {
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+            color: #4b5563;
+        }
+
+        .about-content strong {
+            color: #1a1a1a;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         .footer {
             margin-top: 2rem;
             text-align: center;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             padding: 1.5rem;
             border-radius: 1rem;
-        }
-
-        .footer p {
             color: #1a1a1a;
         }
 
@@ -358,162 +687,420 @@
             font-weight: 600;
         }
 
-        .footer a:hover,
-        .footer a:focus {
-            text-decoration: underline;
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
         }
 
-        .hidden {
-            display: none;
-        }
-
-        .analyzing {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
             }
-            50% {
-                opacity: 0.5;
+
+            .vision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab {
+                min-width: 100px;
+                font-size: 0.9rem;
+                padding: 0.75rem 1rem;
             }
         }
     </style>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+    
     <div class="container">
         <header class="header">
-            <h1>Testeur d'Accessibilité des Visuels</h1>
-            <p class="author">Créé par Ti Racoon</p>
-            <p class="subtitle">Testez vos visuels militants pour tous les types de vision</p>
+            <h1 id="main-content">Testez vos contrastes</h1>
+            <p class="subtitle">Vérifiez et améliorez l'accessibilité visuelle de vos créations</p>
         </header>
 
         <section class="upload-section">
-            <div class="upload-zone">
-                <label for="imageUpload">
-                    <div class="upload-icon" aria-hidden="true">📤</div>
-                    <p style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Sélectionnez une image</p>
-                    <p style="color: #6b7280;">JPG, PNG, GIF</p>
+            <div class="upload-zone" id="uploadZone">
+                <input type="file" id="imageUpload" accept="image/*" aria-label="Sélectionner une image">
+                <label for="imageUpload" class="upload-label">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📤</div>
+                    <p style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Téléchargez une image</p>
+                    <p style="color: #6b7280;">JPG, PNG, GIF - Testez l'accessibilité de vos visuels</p>
                 </label>
-                <input type="file" accept="image/*" id="imageUpload" aria-label="Sélectionner une image">
             </div>
         </section>
 
-        <div class="main-content hidden" id="mainContent">
-            <aside class="controls-panel">
-                <h2>Type de Vision</h2>
-                <div id="visionButtons" role="radiogroup" aria-label="Sélectionner un type de vision">
-                    <!-- Buttons will be inserted here -->
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn-analyze" id="analyzeBtn" aria-label="Analyser les contrastes de l'image">
-                        <span aria-hidden="true">🔍</span>
-                        <span>Analyser les contrastes</span>
-                    </button>
-                    <button class="btn btn-download" id="downloadBtn" aria-label="Télécharger l'image simulée">
-                        <span aria-hidden="true">⬇</span>
-                        <span>Télécharger l'image</span>
-                    </button>
-                    <button class="btn btn-delete" id="clearBtn" aria-label="Supprimer le visuel actuel">
-                        <span aria-hidden="true">🗑</span>
-                        <span>Supprimer le visuel</span>
-                    </button>
-                    <button class="btn btn-reset" id="resetBtn" aria-label="Réinitialiser et charger une nouvelle image">
-                        <span aria-hidden="true">🔄</span>
-                        <span>Nouvelle image</span>
-                    </button>
-                </div>
-            </aside>
+        <div class="tabs-container hidden" id="mainContent">
+            <div class="tabs" role="tablist">
+                <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-simulations" id="btn-tab-simulations">
+                    Simulations
+                </button>
+                <button class="tab" role="tab" aria-selected="false" aria-controls="tab-contraste" id="btn-tab-contraste">
+                    Contraste Texte
+                </button>
+                <button class="tab" role="tab" aria-selected="false" aria-controls="tab-analyse" id="btn-tab-analyse">
+                    Analyse
+                </button>
+                <button class="tab" role="tab" aria-selected="false" aria-controls="tab-apropos" id="btn-tab-apropos">
+                    À Propos
+                </button>
+                <button class="tab" role="tab" aria-selected="false" aria-controls="tab-outils" id="btn-tab-outils">
+                    Autres Outils
+                </button>
+            </div>
 
-            <main class="preview-panel">
-                <h2 id="previewTitle">Aperçu - Vision Standard</h2>
-                <div class="canvas-wrapper">
-                    <canvas id="canvas" role="img" aria-label="Aperçu de l'image avec simulation de vision"></canvas>
+            <!-- Onglet Simulations -->
+            <div class="tab-content active" id="tab-simulations" role="tabpanel">
+                <div class="main-workspace">
+                    <aside class="panel">
+                        <h2>Types de Vision</h2>
+                        <div class="vision-grid" id="visionButtons" role="radiogroup" aria-label="Sélectionner un type de vision"></div>
+                        
+                        <div class="adjustments-panel">
+                            <h3>Ajustements</h3>
+                            <div class="slider-group">
+                                <label>
+                                    <span>Luminosité</span>
+                                    <span id="brightnessValue">100%</span>
+                                </label>
+                                <input type="range" id="brightness" min="50" max="150" value="100" aria-label="Ajuster la luminosité">
+                            </div>
+                            <div class="slider-group">
+                                <label>
+                                    <span>Contraste</span>
+                                    <span id="contrastValue">100%</span>
+                                </label>
+                                <input type="range" id="contrast" min="50" max="200" value="100" aria-label="Ajuster le contraste">
+                            </div>
+                            <div class="slider-group" id="scotomaSliderGroup" style="display: none;">
+                                <label>
+                                    <span>Taille de la tache</span>
+                                    <span id="scotomaValue">20%</span>
+                                </label>
+                                <input type="range" id="scotomaSize" min="10" max="40" value="20" aria-label="Ajuster la taille de la tache aveugle">
+                            </div>
+                            <button class="btn btn-warning" id="resetAdjustments">
+                                Réinitialiser
+                            </button>
+                        </div>
+                        
+                        <button class="btn btn-success" id="resetBtn">
+                            Nouvelle image
+                        </button>
+                    </aside>
+
+                    <main>
+                        <h2 id="previewTitle">Aperçu - Vision Standard</h2>
+                        <div class="canvas-wrapper">
+                            <canvas id="canvas" role="img" aria-label="Aperçu de l'image avec simulation de vision" tabindex="0"></canvas>
+                        </div>
+                        <button class="btn btn-purple" id="downloadBtn">
+                            Télécharger l'image simulée
+                        </button>
+                    </main>
                 </div>
-                
-                <div id="analysisResults"></div>
-                
-                <div class="info-box tips">
-                    <h3>
-                        <span aria-hidden="true">✓</span>
-                        <span>Conseils d'accessibilité</span>
-                    </h3>
+            </div>
+
+            <!-- Onglet Contraste Texte -->
+            <div class="tab-content" id="tab-contraste" role="tabpanel">
+                <div class="main-workspace">
+                    <aside class="panel">
+                        <h2>Prélever les couleurs</h2>
+                        
+                        <div class="info-box info" style="margin-bottom: 1.5rem;">
+                            <h3>Astuce</h3>
+                            <p>Faites un screenshot de votre texte et téléchargez-le pour vérifier les contrastes avec la pipette.</p>
+                        </div>
+
+                        <div class="color-picker-section">
+                            <h3>Couleur du texte</h3>
+                            <div class="color-input-group">
+                                <label for="fgHex">Hex</label>
+                                <input type="text" id="fgHex" value="000000" maxlength="6">
+                                <input type="color" id="fgPicker" value="#000000" aria-label="Sélecteur de couleur pour le texte">
+                            </div>
+                            <button class="btn btn-primary" id="pipetteFg" aria-pressed="false" disabled>
+                                Pipette pour le texte
+                            </button>
+                        </div>
+
+                        <div class="color-picker-section">
+                            <h3>Couleur du fond</h3>
+                            <div class="color-input-group">
+                                <label for="bgHex">Hex</label>
+                                <input type="text" id="bgHex" value="FFFFFF" maxlength="6">
+                                <input type="color" id="bgPicker" value="#FFFFFF" aria-label="Sélecteur de couleur pour le fond">
+                            </div>
+                            <button class="btn btn-primary" id="pipetteBg" aria-pressed="false" disabled>
+                                Pipette pour le fond
+                            </button>
+                        </div>
+                    </aside>
+
+                    <main>
+                        <div class="canvas-instructions hidden" id="canvasInfo" role="status" aria-live="polite">
+                            Mode pipette activé. Cliquez sur l'image pour prélever une couleur.
+                        </div>
+                        <div class="canvas-wrapper">
+                            <canvas id="canvas2" role="img" aria-label="Image pour prélèvement de couleurs" tabindex="0"></canvas>
+                        </div>
+
+                        <div class="contrast-results">
+                            <div class="ratio-display">
+                                <span class="ratio-label">Ratio de contraste</span>
+                                <span class="ratio-value" id="ratio" aria-live="assertive">21:1</span>
+                            </div>
+
+                            <div class="test-grid">
+                                <div class="test-item">
+                                    <div class="test-header">
+                                        <h3 class="test-title">Texte normal</h3>
+                                        <div class="test-badges" role="status">
+                                            <span class="badge pass" id="normalAA">AA</span>
+                                            <span class="badge pass" id="normalAAA">AAA</span>
+                                        </div>
+                                    </div>
+                                    <div class="preview" id="previewNormal">
+                                        Texte d'exemple
+                                    </div>
+                                </div>
+
+                                <div class="test-item">
+                                    <div class="test-header">
+                                        <h3 class="test-title">Texte large (18pt+ ou 14pt gras+)</h3>
+                                        <div class="test-badges" role="status">
+                                            <span class="badge pass" id="largeAA">AA</span>
+                                            <span class="badge pass" id="largeAAA">AAA</span>
+                                        </div>
+                                    </div>
+                                    <div class="preview large" id="previewLarge">
+                                        Texte large
+                                    </div>
+                                </div>
+
+                                <div class="test-item">
+                                    <div class="test-header">
+                                        <h3 class="test-title">UI / Icônes</h3>
+                                        <div class="test-badges" role="status">
+                                            <span class="badge pass" id="uiAA">AA</span>
+                                        </div>
+                                    </div>
+                                    <div class="preview" id="previewUI">
+                                        ★ Élément
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-box info">
+                            <h3>Critères WCAG</h3>
+                            <ul>
+                                <li>AA (minimum requis) : 4.5:1 pour le texte normal, 3:1 pour le texte large et les éléments d'interface</li>
+                                <li>AAA (recommandé) : 7:1 pour le texte normal, 4.5:1 pour le texte large</li>
+                            </ul>
+                        </div>
+                    </main>
+                </div>
+            </div>
+
+            <!-- Onglet Analyse -->
+            <div class="tab-content" id="tab-analyse" role="tabpanel">
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <button class="btn btn-primary" id="analyzeBtn" style="margin-bottom: 2rem;">
+                        Analyser l'accessibilité de l'image
+                    </button>
+                    <div id="analysisResults"></div>
+                </div>
+            </div>
+
+            <!-- Onglet À Propos -->
+            <div class="tab-content" id="tab-apropos" role="tabpanel">
+                <div class="about-content">
+                    <h2>À quoi sert cet outil ?</h2>
+                    <p>Cet outil vous permet de <strong>vérifier et améliorer l'accessibilité visuelle</strong> de vos créations avant leur publication. Que vous créiez des visuels pour les réseaux sociaux, des maquettes de tracts, d'affiches ou des contenus web, assurez-vous que votre message soit lisible par tous.</p>
+
+                    <h2>Qui est concerné ?</h2>
                     <ul>
-                        <li>Testez votre image avec tous les types de vision</li>
-                        <li>Vérifiez que le texte reste lisible</li>
-                        <li>Assurez un contraste minimum de 4.5:1</li>
-                        <li>Ajoutez toujours un texte alternatif descriptif</li>
-                        <li>Évitez de transmettre l'information uniquement par la couleur</li>
+                        <li><strong>8% des hommes</strong> et 0,5% des femmes ont une forme de daltonisme</li>
+                        <li>Des millions de personnes vivent avec une DMLA, un glaucome, ou d'autres déficiences visuelles</li>
+                        <li><strong>Tout le monde</strong> peut avoir des difficultés de lecture avec de mauvais contrastes</li>
+                    </ul>
+
+                    <h2>Comment l'utiliser ?</h2>
+                    <h3>1. Onglet Simulations</h3>
+                    <p>Téléchargez votre visuel et testez-le avec 12 types de vision différents (daltonisme, DMLA, vision floue...). Téléchargez les simulations pour les partager.</p>
+
+                    <h3>2. Onglet Contraste Texte</h3>
+                    <p>Vérifiez que vos textes respectent les normes WCAG. Utilisez la pipette pour prélever les couleurs directement sur votre image, ou faites un screenshot de votre texte et testez-le.</p>
+
+                    <h3>3. Onglet Analyse</h3>
+                    <p>Obtenez un score d'accessibilité global et des recommandations pour améliorer votre visuel.</p>
+
+                    <h2>Les normes WCAG</h2>
+                    <ul>
+                        <li><strong>AA (minimum requis)</strong> : Contraste de 4.5:1 pour le texte normal, 3:1 pour le texte large et les éléments d'interface</li>
+                        <li><strong>AAA (recommandé)</strong> : Contraste de 7:1 pour le texte normal, 4.5:1 pour le texte large</li>
+                    </ul>
+
+                    <h2>Note pour l'impression</h2>
+                    <p>Pour les tracts et affiches : testez votre maquette numérique ici avant de l'envoyer à l'impression. Les contrastes peuvent légèrement varier à l'impression selon le papier et le procédé utilisé. N'hésitez pas à demander une épreuve à votre imprimeur.</p>
+
+                    <h2>Faites mieux !</h2>
+                    <p><strong>L'accessibilité n'est pas une option, c'est un droit.</strong> Créez des contenus inclusifs dès la conception.</p>
+                </div>
+            </div>
+
+            <!-- Onglet Autres Outils -->
+            <div class="tab-content" id="tab-outils" role="tabpanel">
+                <div class="about-content">
+                    <h2>Autres Outils Accessibles</h2>
+
+                    <h3>Outil de Descriptions d'Images Accessibles</h3>
+                    <p><strong>Cet outil-ci</strong> (Testez vos contrastes) vous aide à <strong>vérifier et corriger</strong> l'accessibilité visuelle <strong>avant</strong> la publication : contrastes, simulations de daltonisme, lisibilité.</p>
+
+                    <p><strong>L'Outil de Descriptions d'Images</strong> vous aide <strong>après</strong> avoir créé votre visuel : il génère des descriptions textuelles accessibles notamment pour les personnes utilisant un lecteur d'écran.</p>
+
+                    <div class="info-box tips">
+                        <h3>Les deux outils sont complémentaires</h3>
+                        <ul>
+                            <li>Utilisez d'abord "Testez vos contrastes" pour valider votre visuel</li>
+                            <li>Puis utilisez l'Outil de Descriptions pour créer le texte alternatif</li>
+                        </ul>
+                    </div>
+
+                    <h3>Liens</h3>
+                    <ul>
+                        <li><strong>Accéder à l'outil</strong> : <a href="https://alixb-accessible.github.io/Outil-de-descriptions-d-images-accessibles-/" target="_blank" rel="noopener noreferrer">Outil de Descriptions d'Images Accessibles</a></li>
+                        <li><strong>Mode d'emploi</strong> : <a href="https://alixb-accessible.github.io/Outil-de-descriptions-d-images-accessibles-/mode-emploi.html" target="_blank" rel="noopener noreferrer">Comment l'utiliser</a></li>
                     </ul>
                 </div>
-            </main>
+            </div>
         </div>
 
         <footer class="footer">
-            <p style="font-size: 1.1rem; font-weight: 600;">« Faites mieux ! » © JLM</p>
-            <p style="margin-top: 1rem; font-weight: 600;">Contact</p>
-            <p style="margin-top: 0.5rem;">Pour toute question, suggestion ou collaboration :</p>
-            <p style="margin-top: 0.5rem;"><a href="mailto:TiRacoon_97114@proton.me">TiRacoon_97114@proton.me</a></p>
+            <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">« Faites mieux ! » © JLM</p>
+            <p style="margin-bottom: 0.5rem;">Créé par Ti Racoon</p>
+            <p><a href="mailto:TiRacoon_97114@proton.me">TiRacoon_97114@proton.me</a></p>
             <p style="margin-top: 0.5rem;">Ensemble, créons un web plus accessible et inclusif</p>
         </footer>
     </div>
 
     <img id="sourceImage" alt="" style="display: none;">
-<script>
+
+    <script>
         const visionTypes = [
-            { id: 'normal', name: 'Vision Standard', desc: 'Vision normale sans altération' },
-            { id: 'deuteranopia', name: 'Deutéranopie', desc: 'Difficulté rouge/vert (5% hommes)' },
-            { id: 'protanopia', name: 'Protanopie', desc: 'Absence de récepteurs rouge' },
-            { id: 'tritanopia', name: 'Tritanopie', desc: 'Difficulté bleu/jaune (rare)' },
-            { id: 'achromatopsia', name: 'Achromatopsie', desc: 'Vision en nuances de gris' },
-            { id: 'monochromacy', name: 'Monochromatie', desc: 'Vision limitée à une couleur' },
-            { id: 'photophobia', name: 'Photophobie', desc: 'Hypersensibilité à la lumière' },
-            { id: 'scotopic', name: 'Vision Scotopique', desc: 'Vision en faible luminosité' },
-            { id: 'tunnel', name: 'Vision Tunnel', desc: 'Perte de vision périphérique' },
-            { id: 'peripheral', name: 'Perte Périphérique', desc: 'Perte de vision centrale' },
-            { id: 'scotoma', name: 'Scotome Central', desc: 'Tache aveugle centrale (DMLA)' },
-            { id: 'hemianopsia', name: 'Hémianopsie', desc: 'Perte de la moitié du champ visuel' },
-            { id: 'blurred', name: 'Vision Floue', desc: 'Prosopagnosie - difficulté à reconnaître' }
+            { id: 'normal', name: 'Vision Standard', desc: 'Aucune altération' },
+            { id: 'deuteranopia', name: 'Deutéranopie', desc: 'Rouge/vert (5%)' },
+            { id: 'protanopia', name: 'Protanopie', desc: 'Absence rouge' },
+            { id: 'tritanopia', name: 'Tritanopie', desc: 'Bleu/jaune' },
+            { id: 'achromatopsia', name: 'Achromatopsie', desc: 'Nuances de gris' },
+            { id: 'monochromacy', name: 'Monochromatie', desc: 'Une couleur' },
+            { id: 'photophobia', name: 'Photophobie', desc: 'Sensible lumière' },
+            { id: 'scotopic', name: 'Scotopique', desc: 'Faible lumière' },
+            { id: 'tunnel', name: 'Vision Tunnel', desc: 'Perte périphérie' },
+            { id: 'scotoma', name: 'Scotome', desc: 'Tache aveugle' },
+            { id: 'hemianopsia', name: 'Hémianopsie', desc: 'Moitié champ' },
+            { id: 'blurred', name: 'Vision Floue', desc: 'Difficulté focus' }
         ];
 
         let currentVision = 'normal';
+        let currentTab = 'simulations';
         let originalImage = null;
+        let pipetteMode = null;
+        let imageData = null;
+        let brightness = 100;
+        let contrast = 100;
+        let scotomaSize = 20;
 
         const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+        const canvas2 = document.getElementById('canvas2');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const ctx2 = canvas2.getContext('2d', { willReadFrequently: true });
         const sourceImage = document.getElementById('sourceImage');
         const mainContent = document.getElementById('mainContent');
-        const previewTitle = document.getElementById('previewTitle');
+        const uploadZone = document.getElementById('uploadZone');
         const visionButtonsContainer = document.getElementById('visionButtons');
         const analysisResults = document.getElementById('analysisResults');
+        const scotomaSliderGroup = document.getElementById('scotomaSliderGroup');
 
-        // Create vision type buttons
-        visionTypes.forEach((vision, index) => {
+        // Create vision buttons
+        visionTypes.forEach(vision => {
             const button = document.createElement('button');
-            button.className = `vision-button ${vision.id === 'normal' ? 'active' : ''}`;
-            button.setAttribute('role', 'radio');
-            button.setAttribute('aria-checked', vision.id === 'normal' ? 'true' : 'false');
+            button.className = `vision-btn ${vision.id === 'normal' ? 'active' : ''}`;
             button.setAttribute('data-vision', vision.id);
-            button.innerHTML = `
-                <span class="name">${vision.name}</span>
-                <span class="desc">${vision.desc}</span>
-            `;
+            button.innerHTML = `<span class="name">${vision.name}</span><span class="desc">${vision.desc}</span>`;
             button.addEventListener('click', () => selectVision(vision.id));
-            button.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    selectVision(vision.id);
-                }
-            });
             visionButtonsContainer.appendChild(button);
         });
 
+        // Tab navigation
+        const tabButtons = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('aria-controls');
+                switchTab(targetId);
+            });
+        });
+
+        function switchTab(tabId) {
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            const activeButton = document.getElementById('btn-' + tabId);
+            const activeContent = document.getElementById(tabId);
+            
+            if (activeButton && activeContent) {
+                activeButton.classList.add('active');
+                activeButton.setAttribute('aria-selected', 'true');
+                activeContent.classList.add('active');
+                
+                currentTab = tabId.replace('tab-', '');
+                
+                if (currentTab === 'contraste' && originalImage) {
+                    syncCanvas();
+                }
+            }
+        }
+
+        // Event listeners
         document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
         document.getElementById('downloadBtn').addEventListener('click', downloadImage);
         document.getElementById('resetBtn').addEventListener('click', reset);
-        document.getElementById('clearBtn').addEventListener('click', reset);
-        document.getElementById('analyzeBtn').addEventListener('click', analyzeContrast);
+        document.getElementById('analyzeBtn').addEventListener('click', analyzeAccessibility);
+        document.getElementById('pipetteFg').addEventListener('click', () => togglePipette('fg'));
+        document.getElementById('pipetteBg').addEventListener('click', () => togglePipette('bg'));
+        document.getElementById('brightness').addEventListener('input', updateAdjustments);
+        document.getElementById('contrast').addEventListener('input', updateAdjustments);
+        document.getElementById('scotomaSize').addEventListener('input', updateScotomaSize);
+        document.getElementById('resetAdjustments').addEventListener('click', resetAdjustments);
+
+        canvas2.addEventListener('click', handleCanvasClick);
+        canvas2.addEventListener('keydown', handleCanvasKeydown);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && pipetteMode) {
+                deactivatePipette();
+            }
+        });
+
+        syncInputs(document.getElementById('fgHex'), document.getElementById('fgPicker'));
+        syncInputs(document.getElementById('bgHex'), document.getElementById('bgPicker'));
 
         function handleImageUpload(e) {
             const file = e.target.files[0];
@@ -524,9 +1111,22 @@
                     sourceImage.onload = function() {
                         originalImage = event.target.result;
                         mainContent.classList.remove('hidden');
+                        uploadZone.classList.add('has-image');
                         currentVision = 'normal';
+                        brightness = 100;
+                        contrast = 100;
+                        scotomaSize = 20;
+                        document.getElementById('brightness').value = 100;
+                        document.getElementById('contrast').value = 100;
+                        document.getElementById('scotomaSize').value = 20;
+                        document.getElementById('brightnessValue').textContent = '100%';
+                        document.getElementById('contrastValue').textContent = '100%';
+                        document.getElementById('scotomaValue').textContent = '20%';
                         updateVisionButtons();
                         applyVisionFilter();
+                        syncCanvas();
+                        document.getElementById('pipetteFg').disabled = false;
+                        document.getElementById('pipetteBg').disabled = false;
                         analysisResults.innerHTML = '';
                     };
                 };
@@ -537,49 +1137,50 @@
         function selectVision(visionId) {
             currentVision = visionId;
             updateVisionButtons();
+            scotomaSliderGroup.style.display = visionId === 'scotoma' ? 'block' : 'none';
             applyVisionFilter();
         }
 
         function updateVisionButtons() {
-            const buttons = document.querySelectorAll('.vision-button');
+            const buttons = document.querySelectorAll('.vision-btn');
             buttons.forEach(button => {
                 const isActive = button.getAttribute('data-vision') === currentVision;
                 button.classList.toggle('active', isActive);
-                button.setAttribute('aria-checked', isActive ? 'true' : 'false');
             });
             const visionName = visionTypes.find(v => v.id === currentVision).name;
-            previewTitle.textContent = `Aperçu - ${visionName}`;
+            document.getElementById('previewTitle').textContent = 'Aperçu - ' + visionName;
         }
-function applyVisionFilter() {
+
+        function applyVisionFilter() {
             if (!sourceImage.src) return;
 
             canvas.width = sourceImage.naturalWidth;
             canvas.height = sourceImage.naturalHeight;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.filter = 'brightness(' + brightness + '%) contrast(' + contrast + '%)';
             ctx.drawImage(sourceImage, 0, 0);
+            ctx.filter = 'none';
 
-            if (currentVision === 'normal') return;
+            if (currentVision === 'normal') {
+                imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                return;
+            }
 
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
 
             switch(currentVision) {
                 case 'deuteranopia':
                     for (let i = 0; i < data.length; i += 4) {
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
+                        const r = data[i], g = data[i + 1], b = data[i + 2];
                         data[i] = 0.625 * r + 0.375 * g;
                         data[i + 1] = 0.7 * g + 0.3 * r;
-                        data[i + 2] = b;
                     }
                     break;
                 case 'protanopia':
                     for (let i = 0; i < data.length; i += 4) {
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
+                        const r = data[i], g = data[i + 1], b = data[i + 2];
                         data[i] = 0.567 * r + 0.433 * g;
                         data[i + 1] = 0.558 * g + 0.442 * r;
                         data[i + 2] = 0.242 * r + 0.758 * b;
@@ -587,9 +1188,7 @@ function applyVisionFilter() {
                     break;
                 case 'tritanopia':
                     for (let i = 0; i < data.length; i += 4) {
-                        const r = data[i];
-                        const g = data[i + 1];
-                        const b = data[i + 2];
+                        const r = data[i], g = data[i + 1], b = data[i + 2];
                         data[i] = 0.95 * r + 0.05 * g;
                         data[i + 1] = 0.433 * g + 0.567 * b;
                         data[i + 2] = 0.475 * b + 0.525 * g;
@@ -606,7 +1205,6 @@ function applyVisionFilter() {
                         const blue = data[i + 2];
                         data[i] = blue * 0.3;
                         data[i + 1] = blue * 0.6;
-                        data[i + 2] = blue;
                     }
                     break;
                 case 'photophobia':
@@ -618,16 +1216,13 @@ function applyVisionFilter() {
                     break;
                 case 'scotopic':
                     for (let i = 0; i < data.length; i += 4) {
-                        data[i] = data[i] * 0.4;
-                        data[i + 1] = data[i + 1] * 0.5;
-                        data[i + 2] = data[i + 2] * 0.8;
+                        data[i] *= 0.4;
+                        data[i + 1] *= 0.5;
+                        data[i + 2] *= 0.8;
                     }
                     break;
                 case 'tunnel':
                     applyTunnelVision();
-                    return;
-                case 'peripheral':
-                    applyPeripheralLoss();
                     return;
                 case 'scotoma':
                     applyScotoma();
@@ -639,6 +1234,7 @@ function applyVisionFilter() {
                     ctx.filter = 'blur(4px)';
                     ctx.drawImage(sourceImage, 0, 0);
                     ctx.filter = 'none';
+                    imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     return;
             }
 
@@ -649,201 +1245,365 @@ function applyVisionFilter() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
             const radius = Math.min(canvas.width, canvas.height) * 0.25;
-            
             const gradient = ctx.createRadialGradient(centerX, centerY, radius, centerX, centerY, radius * 3);
             gradient.addColorStop(0, 'rgba(0,0,0,0)');
             gradient.addColorStop(0.5, 'rgba(0,0,0,0.5)');
             gradient.addColorStop(1, 'rgba(0,0,0,0.9)');
-            
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-
-        function applyPeripheralLoss() {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = Math.min(canvas.width, canvas.height) * 0.15;
-            
-            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-            gradient.addColorStop(0, 'rgba(0,0,0,0.8)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
 
         function applyScotoma() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const radius = Math.min(canvas.width, canvas.height) * 0.2;
+            const baseRadius = Math.min(canvas.width, canvas.height);
+            const radius = baseRadius * (scotomaSize / 100);
             
-            // Créer un gradient radial pour des bords flous
-            const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.3, centerX, centerY, radius);
-            gradient.addColorStop(0, 'rgba(40,40,40,0.95)');
-            gradient.addColorStop(0.7, 'rgba(60,60,60,0.8)');
-            gradient.addColorStop(1, 'rgba(80,80,80,0.3)');
+            const gradient = ctx.createRadialGradient(
+                centerX, centerY, 0,
+                centerX, centerY, radius
+            );
+            gradient.addColorStop(0, 'rgba(50,50,50,0.95)');
+            gradient.addColorStop(0.3, 'rgba(60,60,60,0.9)');
+            gradient.addColorStop(0.6, 'rgba(80,80,80,0.7)');
+            gradient.addColorStop(0.85, 'rgba(100,100,100,0.4)');
+            gradient.addColorStop(1, 'rgba(120,120,120,0.1)');
             
             ctx.fillStyle = gradient;
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
             ctx.fill();
+            
+            ctx.filter = 'blur(8px)';
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.filter = 'none';
+            ctx.globalCompositeOperation = 'source-over';
+            
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
 
         function applyHemianopsia() {
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
             ctx.fillRect(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+            imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
-function analyzeContrast() {
+
+        function updateAdjustments() {
+            brightness = document.getElementById('brightness').value;
+            contrast = document.getElementById('contrast').value;
+            document.getElementById('brightnessValue').textContent = brightness + '%';
+            document.getElementById('contrastValue').textContent = contrast + '%';
+            applyVisionFilter();
+            if (currentTab === 'contraste') syncCanvas();
+        }
+
+        function updateScotomaSize() {
+            scotomaSize = document.getElementById('scotomaSize').value;
+            document.getElementById('scotomaValue').textContent = scotomaSize + '%';
+            if (currentVision === 'scotoma') {
+                applyVisionFilter();
+            }
+        }
+
+        function resetAdjustments() {
+            brightness = 100;
+            contrast = 100;
+            scotomaSize = 20;
+            document.getElementById('brightness').value = 100;
+            document.getElementById('contrast').value = 100;
+            document.getElementById('scotomaSize').value = 20;
+            document.getElementById('brightnessValue').textContent = '100%';
+            document.getElementById('contrastValue').textContent = '100%';
+            document.getElementById('scotomaValue').textContent = '20%';
+            applyVisionFilter();
+            if (currentTab === 'contraste') syncCanvas();
+        }
+
+        function syncCanvas() {
             if (!sourceImage.src) return;
+            canvas2.width = sourceImage.naturalWidth;
+            canvas2.height = sourceImage.naturalHeight;
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            ctx2.drawImage(sourceImage, 0, 0);
+            imageData = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
+        }
 
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            analyzeBtn.disabled = true;
-            analyzeBtn.classList.add('analyzing');
+        function togglePipette(mode) {
+            if (pipetteMode === mode) {
+                deactivatePipette();
+            } else {
+                activatePipette(mode);
+            }
+        }
 
-            setTimeout(() => {
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imageData.data;
-                
-                const colorMap = new Map();
-                const brightColors = [];
-                const darkColors = [];
-                
-                // Échantillonner les couleurs (tous les 10 pixels pour la performance)
-                for (let i = 0; i < data.length; i += 40) {
-                    const r = data[i];
-                    const g = data[i + 1];
-                    const b = data[i + 2];
-                    const a = data[i + 3];
-                    
-                    if (a < 128) continue; // Ignorer les pixels transparents
-                    
-                    const colorKey = `${Math.floor(r/20)*20},${Math.floor(g/20)*20},${Math.floor(b/20)*20}`;
-                    colorMap.set(colorKey, (colorMap.get(colorKey) || 0) + 1);
-                    
-                    // Calculer la luminosité
-                    const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-                    
-                    if (luminance > 200) {
-                        brightColors.push({ r, g, b, luminance });
-                    } else if (luminance < 80) {
-                        darkColors.push({ r, g, b, luminance });
-                    }
+        function activatePipette(mode) {
+            pipetteMode = mode;
+            document.getElementById('pipetteFg').classList.toggle('active', mode === 'fg');
+            document.getElementById('pipetteBg').classList.toggle('active', mode === 'bg');
+            document.getElementById('pipetteFg').setAttribute('aria-pressed', mode === 'fg' ? 'true' : 'false');
+            document.getElementById('pipetteBg').setAttribute('aria-pressed', mode === 'bg' ? 'true' : 'false');
+            canvas2.classList.add('pipette-active');
+            document.getElementById('canvasInfo').classList.remove('hidden');
+            canvas2.focus();
+        }
+
+        function deactivatePipette() {
+            pipetteMode = null;
+            document.getElementById('pipetteFg').classList.remove('active');
+            document.getElementById('pipetteBg').classList.remove('active');
+            document.getElementById('pipetteFg').setAttribute('aria-pressed', 'false');
+            document.getElementById('pipetteBg').setAttribute('aria-pressed', 'false');
+            canvas2.classList.remove('pipette-active');
+            document.getElementById('canvasInfo').classList.add('hidden');
+        }
+
+        function handleCanvasClick(e) {
+            if (!imageData || !pipetteMode) return;
+            const rect = canvas2.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) * (canvas2.width / rect.width));
+            const y = Math.floor((e.clientY - rect.top) * (canvas2.height / rect.height));
+            pickColorAtPosition(x, y);
+        }
+
+        function handleCanvasKeydown(e) {
+            if (!imageData || !pipetteMode) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const x = Math.floor(canvas2.width / 2);
+                const y = Math.floor(canvas2.height / 2);
+                pickColorAtPosition(x, y);
+            }
+        }
+
+        function pickColorAtPosition(x, y) {
+            const index = (y * canvas2.width + x) * 4;
+            const r = imageData.data[index];
+            const g = imageData.data[index + 1];
+            const b = imageData.data[index + 2];
+            const hex = rgbToHex(r, g, b);
+            
+            if (pipetteMode === 'fg') {
+                document.getElementById('fgHex').value = hex;
+                document.getElementById('fgPicker').value = '#' + hex;
+            } else if (pipetteMode === 'bg') {
+                document.getElementById('bgHex').value = hex;
+                document.getElementById('bgPicker').value = '#' + hex;
+            }
+            
+            updateContrast();
+            deactivatePipette();
+        }
+
+        function syncInputs(hexInput, picker) {
+            hexInput.addEventListener('input', e => {
+                let val = e.target.value.replace('#', '').toUpperCase();
+                val = val.replace(/[^0-9A-F]/g, '');
+                e.target.value = val;
+                if (val.length === 6) {
+                    picker.value = '#' + val;
+                    updateContrast();
                 }
+            });
+
+            picker.addEventListener('input', e => {
+                hexInput.value = e.target.value.replace('#', '');
+                updateContrast();
+            });
+        }
+
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            return [
+                parseInt(hex.substr(0, 2), 16),
+                parseInt(hex.substr(2, 2), 16),
+                parseInt(hex.substr(4, 2), 16)
+            ];
+        }
+
+        function rgbToHex(r, g, b) {
+            return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+
+        function getLuminance(r, g, b) {
+            const [rs, gs, bs] = [r, g, b].map(val => {
+                val = val / 255;
+                return val <= 0.03928 ? val / 12.92 : Math.pow((val + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+        }
+
+        function getContrastRatio(fg, bg) {
+            const l1 = getLuminance(...hexToRgb(fg));
+            const l2 = getLuminance(...hexToRgb(bg));
+            const lighter = Math.max(l1, l2);
+            const darker = Math.min(l1, l2);
+            return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        function updateContrast() {
+            const fgHex = document.getElementById('fgHex').value.replace('#', '');
+            const bgHex = document.getElementById('bgHex').value.replace('#', '');
+
+            if (fgHex.length !== 6 || bgHex.length !== 6) return;
+
+            const ratio = getContrastRatio(fgHex, bgHex);
+            document.getElementById('ratio').textContent = ratio.toFixed(2) + ':1';
+
+            const fgColor = '#' + fgHex;
+            const bgColor = '#' + bgHex;
+
+            document.querySelectorAll('.preview').forEach(el => {
+                el.style.color = fgColor;
+                el.style.backgroundColor = bgColor;
+            });
+
+            updateBadge('normalAA', ratio >= 4.5, 'AA');
+            updateBadge('normalAAA', ratio >= 7, 'AAA');
+            updateBadge('largeAA', ratio >= 3, 'AA');
+            updateBadge('largeAAA', ratio >= 4.5, 'AAA');
+            updateBadge('uiAA', ratio >= 3, 'AA');
+        }
+
+        function updateBadge(id, pass, level) {
+            const badge = document.getElementById(id);
+            badge.className = 'badge ' + (pass ? 'pass' : 'fail');
+            badge.textContent = level + (pass ? ' ✓' : ' ✗');
+        }
+
+        function analyzeAccessibility() {
+            if (!imageData) {
+                analysisResults.innerHTML = '<div class="info-box warning"><h3>Aucune image</h3><p>Veuillez d\'abord télécharger une image pour l\'analyser.</p></div>';
+                return;
+            }
+
+            const data = imageData.data;
+            let issues = [];
+            let warnings = [];
+            let tips = [];
+            
+            const hasYellowOnWhite = checkColorCombination(data, 
+                [200, 255], [180, 255], [0, 100],
+                [220, 255], [220, 255], [220, 255]
+            );
+            
+            if (hasYellowOnWhite) {
+                issues.push("Texte jaune sur fond clair détecté - Contraste probablement insuffisant");
+            }
+            
+            const hasRedGreen = checkColorCombination(data,
+                [180, 255], [0, 80], [0, 80],
+                [0, 80], [180, 255], [0, 80]
+            );
+            
+            if (hasRedGreen) {
+                issues.push("Combinaison rouge/vert détectée - Problématique pour les daltoniens");
+            }
+
+            const hasBlueRed = checkColorCombination(data,
+                [0, 80], [0, 80], [180, 255],
+                [180, 255], [0, 80], [0, 80]
+            );
+            
+            if (hasBlueRed) {
+                warnings.push("Combinaison bleu/rouge - Peut être difficile à lire");
+            }
+
+            let brightPixels = 0;
+            let darkPixels = 0;
+            let totalPixels = 0;
+
+            for (let i = 0; i < data.length; i += 40) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const a = data[i + 3];
                 
-                // Trouver les couleurs dominantes
-                const sortedColors = Array.from(colorMap.entries())
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 5);
+                if (a < 128) continue;
                 
-                // Analyser les problèmes potentiels
-                const issues = [];
-                const warnings = [];
-                const info = [];
+                totalPixels++;
+                const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
                 
-                // Détecter jaune sur blanc
-                const hasYellowOnWhite = checkColorCombination(data, 
-                    [200, 255], [180, 255], [0, 100], // Jaune
-                    [220, 255], [220, 255], [220, 255]  // Blanc
-                );
-                
-                if (hasYellowOnWhite) {
-                    issues.push("Texte jaune détecté sur fond clair - Contraste probablement insuffisant");
-                }
-                
-                // Détecter rouge sur vert ou vert sur rouge
-                const hasRedGreen = checkColorCombination(data,
-                    [180, 255], [0, 80], [0, 80],  // Rouge
-                    [0, 80], [180, 255], [0, 80]   // Vert
-                );
-                
-                if (hasRedGreen) {
-                    issues.push("Combinaison rouge/vert détectée - Problématique pour les daltoniens");
-                }
-                
-                // Détecter bleu sur rouge
-                const hasBlueRed = checkColorCombination(data,
-                    [0, 80], [0, 80], [180, 255],  // Bleu
-                    [180, 255], [0, 80], [0, 80]   // Rouge
-                );
-                
-                if (hasBlueRed) {
-                    warnings.push("Combinaison bleu/rouge détectée - Peut être difficile à lire");
-                }
-                
-                // Vérifier les contrastes généraux
-                if (brightColors.length > 100 && darkColors.length < 20) {
+                if (luminance > 200) brightPixels++;
+                if (luminance < 80) darkPixels++;
+            }
+
+            if (totalPixels > 0) {
+                const brightRatio = brightPixels / totalPixels;
+                const darkRatio = darkPixels / totalPixels;
+
+                if (brightRatio > 0.7) {
                     warnings.push("Image majoritairement claire - Vérifiez la lisibilité du texte sombre");
                 }
-                
-                if (darkColors.length > 100 && brightColors.length < 20) {
+                if (darkRatio > 0.7) {
                     warnings.push("Image majoritairement sombre - Vérifiez la lisibilité du texte clair");
                 }
-                
-                // Suggestions générales
-                info.push("Testez votre visuel avec tous les types de vision disponibles");
-                info.push("Assurez-vous que le texte a un contraste d'au moins 4.5:1 avec le fond");
-                
-                if (issues.length === 0 && warnings.length === 0) {
-                    info.push("Aucun problème majeur détecté - continuez à tester avec différentes visions");
-                }
-                
-                // Afficher les résultats
-                let html = '';
-                
-                if (issues.length > 0) {
-                    html += '<div class="info-box error"><h3><span aria-hidden="true">⚠</span><span>Problèmes détectés</span></h3><ul>';
-                    issues.forEach(issue => {
-                        html += `<li>${issue}</li>`;
-                    });
-                    html += '</ul></div>';
-                }
-                
-                if (warnings.length > 0) {
-                    html += '<div class="info-box warning"><h3><span aria-hidden="true">⚠</span><span>Avertissements</span></h3><ul>';
-                    warnings.forEach(warning => {
-                        html += `<li>${warning}</li>`;
-                    });
-                    html += '</ul></div>';
-                }
-                
-                if (info.length > 0) {
-                    html += '<div class="info-box info"><h3><span aria-hidden="true">ℹ</span><span>Recommandations</span></h3><ul>';
-                    info.forEach(i => {
-                        html += `<li>${i}</li>`;
-                    });
-                    html += '</ul></div>';
-                }
-                
-                analysisResults.innerHTML = html;
-                
-                analyzeBtn.disabled = false;
-                analyzeBtn.classList.remove('analyzing');
-            }, 500);
+            }
+
+            let score = 100;
+            score -= issues.length * 30;
+            score -= warnings.length * 15;
+            score = Math.max(0, score);
+
+            let scoreClass = 'score-excellent';
+            let scoreLabel = 'Excellent';
+            if (score < 80) { scoreClass = 'score-good'; scoreLabel = 'Bon'; }
+            if (score < 60) { scoreClass = 'score-medium'; scoreLabel = 'Moyen'; }
+            if (score < 40) { scoreClass = 'score-poor'; scoreLabel = 'Problématique'; }
+
+            tips.push("Testez votre visuel avec toutes les simulations de vision disponibles");
+            tips.push("Utilisez la pipette pour vérifier les contrastes des zones importantes");
+            tips.push("Assurez un contraste minimum de 4.5:1 pour le texte normal");
+            
+            if (issues.length === 0 && warnings.length === 0) {
+                tips.push("Aucun problème majeur détecté lors de l'analyse automatique");
+            }
+
+            let html = '<div class="score-card ' + scoreClass + '">';
+            html += '<div class="score-label">Score d\'accessibilité</div>';
+            html += '<div class="score-value">' + score + '/100</div>';
+            html += '<div class="score-label">' + scoreLabel + '</div>';
+            html += '</div>';
+            
+            if (issues.length > 0) {
+                html += '<div class="info-box error"><h3>Problèmes détectés</h3><ul>';
+                issues.forEach(issue => html += '<li>' + issue + '</li>');
+                html += '</ul></div>';
+            }
+            
+            if (warnings.length > 0) {
+                html += '<div class="info-box warning"><h3>Avertissements</h3><ul>';
+                warnings.forEach(warning => html += '<li>' + warning + '</li>');
+                html += '</ul></div>';
+            }
+            
+            html += '<div class="info-box tips"><h3>Recommandations</h3><ul>';
+            tips.forEach(tip => html += '<li>' + tip + '</li>');
+            html += '</ul></div>';
+            
+            analysisResults.innerHTML = html;
         }
-        
+
         function checkColorCombination(data, color1R, color1G, color1B, color2R, color2G, color2B) {
             let matches = 0;
-            const threshold = 100; // Nombre de pixels adjacents nécessaires
+            const threshold = 100;
             
             for (let i = 0; i < data.length - 4; i += 40) {
-                const r1 = data[i];
-                const g1 = data[i + 1];
-                const b1 = data[i + 2];
-                const a1 = data[i + 3];
+                const r1 = data[i], g1 = data[i + 1], b1 = data[i + 2], a1 = data[i + 3];
                 
                 if (a1 < 128) continue;
                 
-                // Vérifier si le pixel correspond à la couleur 1
                 if (r1 >= color1R[0] && r1 <= color1R[1] &&
                     g1 >= color1G[0] && g1 <= color1G[1] &&
                     b1 >= color1B[0] && b1 <= color1B[1]) {
                     
-                    // Vérifier les pixels adjacents pour la couleur 2
                     for (let j = -4; j <= 4; j += 4) {
                         if (i + j >= 0 && i + j < data.length - 3) {
-                            const r2 = data[i + j];
-                            const g2 = data[i + j + 1];
-                            const b2 = data[i + j + 2];
+                            const r2 = data[i + j], g2 = data[i + j + 1], b2 = data[i + j + 2];
                             
                             if (r2 >= color2R[0] && r2 <= color2R[1] &&
                                 g2 >= color2G[0] && g2 <= color2G[1] &&
@@ -860,21 +1620,35 @@ function analyzeContrast() {
 
         function downloadImage() {
             const link = document.createElement('a');
-            const visionName = visionTypes.find(v => v.id === currentVision).name;
-            link.download = `visuel-${currentVision}-${Date.now()}.png`;
+            const visionName = visionTypes.find(v => v.id === currentVision).name.replace(/\s+/g, '-');
+            link.download = 'visuel-' + visionName + '-' + Date.now() + '.png';
             link.href = canvas.toDataURL();
             link.click();
         }
 
         function reset() {
-            mainContent.classList.add('hidden');
-            document.getElementById('imageUpload').value = '';
-            sourceImage.src = '';
-            originalImage = null;
-            currentVision = 'normal';
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            analysisResults.innerHTML = '';
+            if (confirm('Êtes-vous sûr de vouloir charger une nouvelle image ? Les modifications actuelles seront perdues.')) {
+                mainContent.classList.add('hidden');
+                uploadZone.classList.remove('has-image');
+                document.getElementById('imageUpload').value = '';
+                sourceImage.src = '';
+                originalImage = null;
+                currentVision = 'normal';
+                pipetteMode = null;
+                brightness = 100;
+                contrast = 100;
+                scotomaSize = 20;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+                analysisResults.innerHTML = '';
+                document.getElementById('canvasInfo').classList.add('hidden');
+                scotomaSliderGroup.style.display = 'none';
+                updateVisionButtons();
+                switchTab('tab-simulations');
+            }
         }
+
+        updateContrast();
     </script>
 </body>
 </html>
