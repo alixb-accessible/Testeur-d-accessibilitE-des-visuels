@@ -705,7 +705,21 @@
             }
 
             .vision-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .vision-btn {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .vision-btn .name {
+                font-size: 0.8rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .vision-btn .desc {
+                font-size: 0.65rem;
             }
 
             .tabs {
@@ -713,9 +727,30 @@
             }
 
             .tab {
-                min-width: 100px;
-                font-size: 0.9rem;
+                min-width: 90px;
+                font-size: 0.85rem;
+                padding: 0.65rem 0.75rem;
+            }
+
+            .panel {
+                padding: 1rem;
+            }
+
+            .btn {
                 padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .score-value {
+                font-size: 3rem;
+            }
+
+            .about-content h2 {
+                font-size: 1.5rem;
+            }
+
+            .about-content h3 {
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -763,6 +798,11 @@
             <div class="tab-content active" id="tab-simulations" role="tabpanel">
                 <div class="main-workspace">
                     <aside class="panel">
+                        <div class="info-box info" style="margin-bottom: 1.5rem;">
+                            <h3>Comment utiliser les simulations ?</h3>
+                            <p style="margin-bottom: 0;">Ces simulations vous montrent comment votre image est perçue par des personnes ayant différentes déficiences visuelles. <strong>L'objectif : vérifier que votre message reste lisible pour tous.</strong> Vous n'avez pas besoin de publier 12 versions différentes ! Une seule image bien contrastée suffit.</p>
+                        </div>
+                        
                         <h2>Types de Vision</h2>
                         <div class="vision-grid" id="visionButtons" role="radiogroup" aria-label="Sélectionner un type de vision"></div>
                         
@@ -938,7 +978,9 @@
 
                     <h2>Comment l'utiliser ?</h2>
                     <h3>1. Onglet Simulations</h3>
-                    <p>Téléchargez votre visuel et testez-le avec 12 types de vision différents (daltonisme, DMLA, vision floue...). Téléchargez les simulations pour les partager.</p>
+                    <p>Téléchargez votre visuel et testez-le avec 12 types de vision différents (daltonisme, DMLA, vision floue...). <strong>Ces simulations sont des outils de test uniquement.</strong> Si votre visuel reste lisible dans toutes les simulations, c'est qu'il est accessible. Vous publiez ensuite <strong>votre image originale</strong> avec de bons contrastes, pas les 12 versions simulées !</p>
+                    
+                    <p><em>Note : Vous pouvez télécharger une simulation pour la montrer à votre équipe ou comprendre un problème de lisibilité, mais ce n'est pas destiné à la publication.</em></p>
 
                     <h3>2. Onglet Contraste Texte</h3>
                     <p>Vérifiez que vos textes respectent les normes WCAG. Utilisez la pipette pour prélever les couleurs directement sur votre image, ou faites un screenshot de votre texte et testez-le.</p>
